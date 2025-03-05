@@ -2,6 +2,11 @@ name: Reusable workflow to build Python package
 
 on:
   workflow_call:
+    inputs:
+      python-versions:
+        description: 'Python versions to test'
+        type: string
+        default: "['3.11' ,'3.12' , '3.13']"
     secrets:
       anaconda-token:
         description: 'Anaconda token'
@@ -14,7 +19,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
-        python-version: ["3.11", "3.12", "3.13"]
+        python-version: ${{ fromJson(inputs.python-versions) }}
 
     steps:
     - uses: actions/checkout@v4
