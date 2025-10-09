@@ -7,6 +7,10 @@ on:
         description: 'Python versions to test'
         type: string
         default: "['3.11' ,'3.12' , '3.13']"
+      publish_anaconda:
+        description: 'Whether to publish to Anaconda'
+        type: boolean
+        default: true
     secrets:
       anaconda-token:
         description: 'Anaconda token'
@@ -60,13 +64,13 @@ jobs:
         name: distribution
         path: dist
     - name: Set up Miniconda for conda-build
-      if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags') && matrix.os == 'ubuntu-latest' && matrix.python-version == '3.11'
+      if: inputs.publish_anaconda == true && github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags') && matrix.os == 'ubuntu-latest' && matrix.python-version == '3.11'
       uses: conda-incubator/setup-miniconda@v3
       with:
         auto-update-conda: true
         python-version: '3.11'
     - name: Build/publish anaconda package
-      if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags') && matrix.os == 'ubuntu-latest' && matrix.python-version == '3.11'
+      if: inputs.publish_anaconda == true && github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags') && matrix.os == 'ubuntu-latest' && matrix.python-version == '3.11'
       shell: bash -l {0}
       run: |
         # make a directory to avoid name conflicts with the channel. argh.
