@@ -76,8 +76,13 @@ jobs:
         # make a directory to avoid name conflicts with the channel. argh.
         mkdir conda_build
         pushd conda_build
-        conda update -n base --all -y
-        conda update --all -y
-        conda install conda-build anaconda-client -y
+        echo "Current directory: $(pwd)"
+        echo "Update base conda and all packages"
+        conda update -n base --all -y -q
+        echo "Update this environment and all packages"
+        conda update --all -y -q
+        echo "Install conda-build and anaconda-client"
+        conda install conda-build anaconda-client -y -q
+        echo "Build and upload package"
         conda-build -q -c nion --skip-existing --user nion --token ${{ secrets.anaconda-token }} ..
         popd
