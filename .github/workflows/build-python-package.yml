@@ -81,6 +81,9 @@ jobs:
         conda update -n base --all -y -q
         echo "Update this environment and all packages"
         conda update --all -y -q
+        echo "Use specific version of conda to work around issue."
+        echo "Remove this or update it in future versions."
+        conda install conda=25.7.0 -y -q
         echo "Install conda-build and anaconda-client"
         conda install conda-build anaconda-client -y -q
         echo "Build and upload package"
