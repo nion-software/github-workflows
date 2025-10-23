@@ -6,7 +6,7 @@ on:
       python-versions:
         description: 'Python versions to test'
         type: string
-        default: "['3.11' ,'3.12' , '3.13']"
+        default: "['3.12', '3.13', '3.14']"
       publish-anaconda:
         description: 'Whether to publish to Anaconda'
         type: boolean
@@ -49,7 +49,7 @@ jobs:
       run: |
         python -m pytest
     - name: Upload Artifacts Debug
-      if: matrix.os == 'ubuntu-latest' && matrix.python-version == '3.11'
+      if: matrix.os == 'ubuntu-latest' && matrix.python-version == '3.12'
       run: |
         echo "Uploading artifacts"
         echo "Current directory: $(pwd)"
@@ -59,18 +59,18 @@ jobs:
         echo "Matrix Python version is ${{ matrix.python-version }}"
     - name: Upload Artifacts
       uses: actions/upload-artifact@v4
-      if: matrix.os == 'ubuntu-latest' && matrix.python-version == '3.11'
+      if: matrix.os == 'ubuntu-latest' && matrix.python-version == '3.12'
       with:
         name: distribution
         path: dist
     - name: Set up Miniconda for conda-build
-      if: inputs.publish-anaconda == true && github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags') && matrix.os == 'ubuntu-latest' && matrix.python-version == '3.11'
+      if: inputs.publish-anaconda == true && github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags') && matrix.os == 'ubuntu-latest' && matrix.python-version == '3.12'
       uses: conda-incubator/setup-miniconda@v3
       with:
         auto-update-conda: true
-        python-version: '3.11'
+        python-version: '3.12'
     - name: Build/publish anaconda package
-      if: inputs.publish-anaconda == true && github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags') && matrix.os == 'ubuntu-latest' && matrix.python-version == '3.11'
+      if: inputs.publish-anaconda == true && github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags') && matrix.os == 'ubuntu-latest' && matrix.python-version == '3.12'
       shell: bash -l {0}
       run: |
         # make a directory to avoid name conflicts with the channel. argh.
@@ -81,9 +81,6 @@ jobs:
         conda update -n base --all -y -q
         echo "Update this environment and all packages"
         conda update --all -y -q
-        echo "Use specific version of conda to work around issue."
-        echo "Remove this or update it in future versions."
-        conda install conda=25.7.0 -y -q
         echo "Install conda-build and anaconda-client"
         conda install conda-build anaconda-client -y -q
         echo "Build and upload package"
