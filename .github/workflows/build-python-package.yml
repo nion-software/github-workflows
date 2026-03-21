@@ -7,14 +7,6 @@ on:
         description: 'Python versions to test'
         type: string
         default: "['3.12', '3.13', '3.14']"
-      publish-anaconda:
-        description: 'Whether to publish to Anaconda'
-        type: boolean
-        default: true
-    secrets:
-      anaconda-token:
-        description: 'Anaconda token'
-        required: true
 
 jobs:
   build:
