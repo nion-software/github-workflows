@@ -14,7 +14,7 @@ on:
     secrets:
       anaconda-token:
         description: 'Anaconda token'
-        required: true
+        required: false
 
 jobs:
   build:
